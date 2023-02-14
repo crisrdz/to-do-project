@@ -1,0 +1,7 @@
+# Enviroment varibles
+.env
+
+# Modules
+node_modules
+
+to-do.txt
