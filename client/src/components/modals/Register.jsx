@@ -1,5 +1,9 @@
 import { Form, redirect, useActionData } from "react-router-dom";
 import { register } from "../../api/auth";
+import { AiFillCloseSquare } from 'react-icons/ai'
+import Button from "../Button";
+import Input from "../Input";
+import ModalForm from "./ModalForm";
 
 export async function action ({ request }) {
   try {
@@ -24,44 +28,48 @@ export async function action ({ request }) {
   }  
 }
 
-function Register({ hidden }) {
+function Register({ handleRegister }) {
   let errors = useActionData()
 
   return (
-    <Form 
+    <ModalForm 
       method="post"
       action="/register"
-      className={hidden ? "hidden" : ""}
+      title="Registro"
     >
+      <button type="button" className="text-red-500 w-max h-max absolute right-2 top-1" onClick={handleRegister}><AiFillCloseSquare className="w-8 h-8" /></button>
+
       <div>
-        <label htmlFor="emailRegister">Email</label>
-        <input type="text" name="email" id="emailRegister" />
+        <label htmlFor="emailRegister" className="block">Email</label>
+        <Input type="text" name="email" id="emailRegister" />
       </div>
 
       <div>
-        <label htmlFor="username">Nombre de usuario</label>
-        <input type="text" name="username" id="username" />
+        <label htmlFor="username" className="block">Nombre de usuario</label>
+        <Input type="text" name="username" id="username" />
       </div>
 
       <div>
-        <label htmlFor="passwordOne">Contraseña</label>
-        <input type="password" name="passwordOne" id="passwordOne" />
+        <label htmlFor="passwordOne" className="block">Contraseña</label>
+        <Input type="password" name="passwordOne" id="passwordOne" />
       </div>
 
       <div>
-        <label htmlFor="passwordTwo">Confirmar contraseña</label>
-        <input type="password" name="passwordTwo" id="passwordTwo" />
+        <label htmlFor="passwordTwo" className="block">Confirmar contraseña</label>
+        <Input type="password" name="passwordTwo" id="passwordTwo" />
       </div>
 
       {errors ?
         <ul>
-          {errors.map(error => <li key={error.param}>{error.msg}</li>)}
+          {errors.map((error, index) => <li key={index}>{error.msg}</li>)}
         </ul> :
         ""
       }
 
-      <button>Registrarse</button>
-    </Form>
+      <div className="flex justify-center">
+        <Button>Registrarse</Button>
+      </div>
+    </ModalForm>
   )
 }
 

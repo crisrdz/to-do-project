@@ -4,9 +4,9 @@ import Layout, {loader as layoutLoader} from "../layouts/Layout";
 
 import LandingPage from "../pages/LandingPage";
 import ErrorPage from "../pages/ErrorPage";
-import UserPage from "../pages/user/UserPage";
 
 //users pages
+import UserPage from "../pages/user/UserPage";
 import HomePage from "../pages/user/home/HomePage";
 import ProfilePage, {loader as profileLoader} from "../pages/user/profile/ProfilePage";
 import EditProfilePage, {action as editProfileAction} from "../pages/user/profile/EditProfilePage";

@@ -1,13 +1,32 @@
-import axios from 'axios'
+import axios from "axios";
 
-export const getUser = async (token) => await axios.get("/api/user", {
-  headers: {
-    "x-access-token": token
+export const getUser = async (token) => {
+  try {
+    return await axios.get("/api/user", {
+      headers: {
+        "x-access-token": token,
+      },
+    });
+  } catch (error) {
+    if(error?.response?.data === ""){
+      window.localStorage.removeItem("token") 
+    }
+    return Promise.reject(error)
   }
-})
+};
 
-export const updateUser = async (token, req) => await axios.put("/api/user", req, {
-  headers: {
-    "x-access-token": token
+export const updateUser = async (token, req) => {
+  try {
+    await axios.put("/api/user", req, {
+      headers: {
+        "x-access-token": token,
+      },
+    });
+  } catch (error) {
+    if(error.response?.data === ""){
+      window.localStorage.removeItem("token")
+    }
+
+    return Promise.reject(error)
   }
-})
+}

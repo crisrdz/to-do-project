@@ -1,5 +1,9 @@
 import { Form, redirect, useActionData } from 'react-router-dom'
 import { login } from '../../api/auth.js'
+import ModalForm from './ModalForm.jsx'
+import { AiFillCloseSquare } from 'react-icons/ai'
+import Button from '../Button.jsx'
+import Input from '../Input.jsx'
 
 export async function action ({ request }) {
   try {
@@ -25,35 +29,38 @@ export async function action ({ request }) {
 }
 
 
-function LogIn ({ hidden }) {
+function Login ({ handleLogin }) {
   const errors = useActionData()
 
   return (
-    <Form 
+    <ModalForm 
       method='post'
       action='/login'
-      className={hidden ? "hidden" : ""}
+      title="Inicio sesión"
     >
+      <button type="button" className="text-red-500 w-max h-max absolute right-2 top-1" onClick={handleLogin}><AiFillCloseSquare className="w-8 h-8" /></button>
+
       <div>
-        <label htmlFor="emailLogin">Correo electrónico</label>
-        <input type="text" name='email' id="emailLogin"/>
+        <label htmlFor="emailLogin" className='block'>Correo electrónico</label>
+        <Input type="text" name='email' id="emailLogin"/>
       </div>
+
       <div>
-        <label htmlFor="password">Contraseña</label>
-        <input type="password" name='password' id="password" />
+        <label htmlFor="password" className='block'>Contraseña</label>
+        <Input type="password" name='password' id="password" />
       </div>
       
       { errors ?
         <ul>
-          {errors.map(error => <li key={error.param}>{error.msg}</li>)}
+          {errors.map((error, index) => <li key={index}>{error.msg}</li>)}
         </ul> :
         ""
       }
-      <div>
-        <button>Iniciar sesión</button>
+      <div className="flex justify-center">
+        <Button>Iniciar sesión</Button>
       </div>
-    </Form>
+    </ ModalForm>
   )
 }
 
-export default LogIn
+export default Login
