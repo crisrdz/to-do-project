@@ -1,6 +1,6 @@
 import { HiOutlineClipboardDocumentList } from 'react-icons/hi2'
 import { useOutletContext } from 'react-router-dom';
-import Button from '../components/Button';
+import Button from '../components/ui/Button';
 
 function LandingPage() {
 

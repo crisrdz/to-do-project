@@ -6,10 +6,6 @@ export async function loader() {
     const token = window.localStorage.getItem("token");
     const response = await getLists(token);
 
-    if (!response.data.success) {
-      throw new Error();
-    }
-
     return response.data.lists;
   } catch (error) {
     throw new Error("Error al leer los datos del usuario");

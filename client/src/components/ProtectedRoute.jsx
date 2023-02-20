@@ -8,7 +8,6 @@ export async function loader () {
     
     return response.data.user
   } catch (error) {
-    
     throw new Error(error)
   }
 }

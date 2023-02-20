@@ -1,5 +1,8 @@
+import { AiOutlineUser } from "react-icons/ai";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { getUser } from "../../../api/user";
+import Button from "../../../components/ui/Button";
+import Title from "../../../components/ui/Title";
 
 export async function loader() {
   const token = window.localStorage.getItem("token");
@@ -19,16 +22,28 @@ function ProfilePage() {
 
   return (
     <>
-      <div>ProfilePage</div>
-      <div>{user.username}</div>
-      <div>{user.email}</div>
-      <div>Roles: </div>
-      <ul>
-        {roles.map((role) => (
-          <li key={role}>{role}</li>
-        ))}
-      </ul>
-      <button onClick={() => navigate("edit")}>Editar</button>
+      <Title>
+        <AiOutlineUser />
+        Perfil
+      </Title>
+      <div className="border-2 border-blue-100 rounded-2xl p-2 w-4/5 max-w-md mx-auto bg-gray-50">
+        <div className="flex flex-col md:flex-row">
+          <div className="flex justify-center m-2 items-center">
+            <AiOutlineUser className="border-4 border-blue-300 rounded-full text-6xl text-blue-300 md:border-6 md:text-9xl" />
+          </div>
+          <div className="my-2 w-full flex flex-col justify-center">
+            <div className="text-center text-xl font-bold">
+              {user.username}
+            </div>
+            <div className="text-center text-lg">
+              {user.email}
+            </div>
+            <div className="flex justify-center m-2">
+              <Button onClick={() => navigate("edit")} customClasses="bg-blue-400 hover:bg-blue-800 border-blue-200 w-16">Editar</Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { Outlet, useLoaderData, useNavigate } from "react-router-dom"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
+import Navbar from "../components/ui/Navbar"
+import Footer from "../components/ui/Footer"
 import Login from "../components/modals/Login"
 import Register from "../components/modals/Register"
 import { useState } from "react"
@@ -11,12 +11,17 @@ export function loader() {
 }
 
 function Layout({children}) {
+  let data = null
+
   const navigate = useNavigate()
 
   const [hiddenLogin, setHiddenLogin] = useState(true)
   const [hiddenRegister, setHiddenRegister] = useState(true)
-  const data = useLoaderData()
-    
+  
+  if(!children){
+    data = useLoaderData()
+  }
+
   function handleLogin () {
     if(data){
       return navigate("/user")
@@ -49,7 +54,7 @@ function Layout({children}) {
       {!hiddenLogin && <Login handleLogin={handleLogin} />}
 
       <main className="flex flex-col items-center justify-center bg-cover min-h-[calc(100vh-4rem-7rem)] md:flex-row md:min-h-[calc(100vh-4rem-8rem)] lg:gap-32" style={{backgroundImage: `url("${background}")`}}>
-        {children ? children : <Outlet context={handleRegister} />}
+        <Outlet context={handleRegister} />
       </main>
       
       <Footer />

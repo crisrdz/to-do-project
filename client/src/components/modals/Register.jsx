@@ -1,8 +1,8 @@
-import { Form, redirect, useActionData } from "react-router-dom";
+import { redirect, useActionData } from "react-router-dom";
 import { register } from "../../api/auth";
 import { AiFillCloseSquare } from 'react-icons/ai'
-import Button from "../Button";
-import Input from "../Input";
+import Button from "../ui//Button";
+import Input from "../ui/Input";
 import ModalForm from "./ModalForm";
 
 export async function action ({ request }) {
@@ -42,29 +42,26 @@ function Register({ handleRegister }) {
       <div>
         <label htmlFor="emailRegister" className="block">Email</label>
         <Input type="text" name="email" id="emailRegister" />
+        { errors && <p className="text-red-500 text-sm">{errors.find((error) => error.param === "email")?.msg}</p> }
       </div>
 
       <div>
         <label htmlFor="username" className="block">Nombre de usuario</label>
         <Input type="text" name="username" id="username" />
+        { errors && <p className="text-red-500 text-sm">{errors.find((error) => error.param === "username")?.msg}</p> }
       </div>
 
       <div>
         <label htmlFor="passwordOne" className="block">Contraseña</label>
         <Input type="password" name="passwordOne" id="passwordOne" />
+        { errors && <p className="text-red-500 text-sm">{errors.find((error) => error.param === "passwordOne")?.msg}</p> }
       </div>
 
       <div>
         <label htmlFor="passwordTwo" className="block">Confirmar contraseña</label>
         <Input type="password" name="passwordTwo" id="passwordTwo" />
+        { errors && <p className="text-red-500 text-sm">{errors.find((error) => error.param === "passwordTwo")?.msg}</p> }
       </div>
-
-      {errors ?
-        <ul>
-          {errors.map((error, index) => <li key={index}>{error.msg}</li>)}
-        </ul> :
-        ""
-      }
 
       <div className="flex justify-center">
         <Button>Registrarse</Button>

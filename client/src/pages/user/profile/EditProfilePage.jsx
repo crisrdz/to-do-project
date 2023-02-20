@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { AiOutlineUser } from 'react-icons/ai';
 import { Form, redirect, useActionData, useNavigate } from 'react-router-dom'
 import { updateUser } from "../../../api/user";
+import Title from '../../../components/ui/Title';
+import Input from '../../../components/ui/Input';
+import Button from '../../../components/ui/Button';
 
 export async function action ({ request }) {
   try {
@@ -29,44 +32,55 @@ function EditProfilePage() {
 
   return (
     <>
-      <button onClick={() => navigate("/user/profile")}>Volver al perfil</button>
+      <div className='text-sm ml-3 mt-3 md:absolute md:left-4 md:top-4 md:m-0'>
+        <Button 
+          onClick={() => navigate("/user/profile")}
+          customClasses="bg-cyan-500 border-cyan-400 hover:bg-cyan-700"
+        >
+          Volver al perfil
+        </Button>
+      </div>
+      <Title>
+        <AiOutlineUser />
+        Editar perfil
+      </Title>
       <Form
-        action=""
         method="put"
+        className="flex flex-col gap-1 border-2 border-blue-100 rounded-2xl p-2 w-4/5 max-w-md mx-auto bg-gray-50 text-lg mb-6"
       >
         <div>
           <label htmlFor="username">Nombre de usuario: </label>
-          <input type="text" name="username" id="username" />
+          <Input type="text" name="username" id="username" />
+          <p className="text-red-500 text-sm">{errors?.find(error => error.param === "username")?.msg}</p>
         </div>
 
         <div>
           <label htmlFor="email">Correo electrónico: </label>
-          <input type="text" name="email" />
+          <Input type="text" name="email" id="email" />
+          <p className="text-red-500 text-sm">{errors?.find(error => error.param === "email")?.msg}</p>
         </div>
         
         <div>
           <label htmlFor="passwordOne">Contraseña: </label>
-          <input type="password" name="passwordOne" />
+          <Input type="password" name="passwordOne" id="passwordOne" />
+          <p className="text-red-500 text-sm">{errors?.find(error => error.param === "passwordOne")?.msg}</p>
         </div>
         
         <div>
           <label htmlFor="passwordTwo">Confirmar contraseña: </label>
-          <input type="password" name="passwordTwo" />
+          <Input type="password" name="passwordTwo" id="passwordTwo" />
+          <p className="text-red-500 text-sm">{errors?.find(error => error.param === "passwordTwo")?.msg}</p>
         </div>
         
         <div>
           <label htmlFor="passwordOld">Contraseña anterior: </label>
-          <input type="password" name="passwordOld" />
+          <Input type="password" name="passwordOld" id="passwordOld" />
+          <p className="text-red-500 text-sm">{errors?.find(error => error.param === "passwordOld")?.msg}</p>
         </div>
 
-        {errors ?
-          <ul>
-            {errors.map(error => <li key={error.msg}>{error.msg}</li>)}
-          </ul> :
-          ""
-        }
-
-        <button>Editar</button>
+        <div className='flex justify-center my-2'>
+          <Button customClasses="bg-blue-400 hover:bg-blue-800 border-blue-200">Editar</Button>
+        </div>
       </Form>
     </>
   )

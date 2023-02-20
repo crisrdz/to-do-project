@@ -1,9 +1,9 @@
-import { Form, redirect, useActionData } from 'react-router-dom'
+import { redirect, useActionData } from 'react-router-dom'
 import { login } from '../../api/auth.js'
 import ModalForm from './ModalForm.jsx'
 import { AiFillCloseSquare } from 'react-icons/ai'
-import Button from '../Button.jsx'
-import Input from '../Input.jsx'
+import Button from '../ui/Button.jsx'
+import Input from '../ui/Input.jsx'
 
 export async function action ({ request }) {
   try {
@@ -50,12 +50,7 @@ function Login ({ handleLogin }) {
         <Input type="password" name='password' id="password" />
       </div>
       
-      { errors ?
-        <ul>
-          {errors.map((error, index) => <li key={index}>{error.msg}</li>)}
-        </ul> :
-        ""
-      }
+      <p className="text-red-500 text-sm">{ errors?.[0]?.msg }</p>
       <div className="flex justify-center">
         <Button>Iniciar sesión</Button>
       </div>

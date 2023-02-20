@@ -8,7 +8,7 @@ export const getUser = async (token) => {
       },
     });
   } catch (error) {
-    if(error?.response?.data === ""){
+    if(error.response.status !== 500){
       window.localStorage.removeItem("token") 
     }
     return Promise.reject(error)
@@ -17,16 +17,15 @@ export const getUser = async (token) => {
 
 export const updateUser = async (token, req) => {
   try {
-    await axios.put("/api/user", req, {
+    return await axios.put("/api/user", req, {
       headers: {
         "x-access-token": token,
       },
     });
   } catch (error) {
-    if(error.response?.data === ""){
+    if(error.response.status !== 500){
       window.localStorage.removeItem("token")
     }
-
     return Promise.reject(error)
   }
 }
