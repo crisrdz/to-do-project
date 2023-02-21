@@ -54,7 +54,7 @@ function Layout({children}) {
       {!hiddenLogin && <Login handleLogin={handleLogin} />}
 
       <main className="flex flex-col items-center justify-center bg-cover min-h-[calc(100vh-4rem-7rem)] md:flex-row md:min-h-[calc(100vh-4rem-8rem)] lg:gap-32" style={{backgroundImage: `url("${background}")`}}>
-        <Outlet context={handleRegister} />
+        {children ? children : <Outlet context={handleRegister} />}
       </main>
       
       <Footer />
