@@ -1,13 +1,27 @@
 import { useState } from 'react'
 import { AiOutlineMenu, AiOutlineHome, AiOutlineUser, AiOutlineUnorderedList } from 'react-icons/ai'
-import { Outlet, NavLink, useNavigate } from 'react-router-dom'
+import { Outlet, NavLink, useNavigate, useLoaderData, redirect } from 'react-router-dom'
+import { getUser } from '../../api/user'
 import background from '../../assets/background.jpg'
 import Footer from '../../components/ui/Footer'
+
+export async function loader () {
+  try {
+    const token = window.localStorage.getItem("token")
+    const response = await getUser(token)
+    
+    return response.data.user
+  } catch (error) {
+    return redirect("/")
+  }
+}
 
 function UserPage() {
   const [menu, setMenu] = useState(false)
   const navigate = useNavigate()
   const styleClasses = "flex flex-row items-center gap-1 hover:text-teal-200"
+  
+  const user = useLoaderData()
 
   function handleLogout () {
     window.localStorage.removeItem("token")
@@ -30,6 +44,18 @@ function UserPage() {
               <AiOutlineHome />Home
             </NavLink>
           </li>
+          { user.roles.map(role => role.name).includes("admin") &&
+            <li className='flex justify-center'>
+              <NavLink 
+                to="admin" 
+                className={({ isActive }) => isActive ? `${styleClasses} text-teal-200` : `${styleClasses} text-teal-50`} 
+                onClick={() => setMenu(false)}
+                end
+              >
+                <AiOutlineHome />Admin
+              </NavLink>
+            </li>
+          }
           <li className='flex justify-center'>
             <NavLink 
               to="profile"
@@ -57,7 +83,9 @@ function UserPage() {
       </aside>
       <div className='md:w-4/5 md:float-right'>
         <main style={{backgroundImage: `url("${background}")`}} className='relative bg-cover min-h-[calc(100vh-2.5rem-7rem)] md:min-h-[calc(100vh-8rem)] flex flex-col justify-center'>
-          <Outlet />
+          
+          <Outlet context={user} />
+        
         </main>
         <Footer />
       </div>

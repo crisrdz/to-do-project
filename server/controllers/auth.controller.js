@@ -56,6 +56,16 @@ export const loginUser = async (req, res) => {
       })
     }
 
+    if (!user.enabled) {
+      return res.status(500).json({
+        success: false,
+        errors: [{
+          msg: "Usuario temporalmente deshabilitado",
+          param: "email"
+        }]
+      })
+    }
+
     if(!await User.comparePasswords(password || "", user.password)){
       return res.status(500).json({
         success: false,
