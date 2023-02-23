@@ -4,7 +4,7 @@ import { createList, deleteList, updateList } from "../../../api/lists";
 import Input from '../../../components/ui/Input'
 import Button from '../../../components/ui/Button'
 import Title from '../../../components/ui/Title'
-import { AiOutlineUnorderedList } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillPlusCircle, AiOutlineUnorderedList } from "react-icons/ai";
 
 export async function action ({ request, params }) {
   try {
@@ -141,7 +141,7 @@ function FormListPage() {
       <Title><AiOutlineUnorderedList /> {list ? "Editar lista" : "Crear lista"}</Title>
       <Form
         method={list ? "PUT" : "POST"}
-        className="border-2 border-gray-400 rounded-xl p-2 mx-auto w-3/4 bg-white"
+        className="border-2 border-gray-400 rounded-xl p-2 mx-auto w-3/4 max-w-[24rem] md:w-96 bg-white"
       >
         <div className="border-y-2 border-gray-200 pt-1 pb-2">
           <label htmlFor="list_name">Nombre de la lista:</label>
@@ -153,7 +153,7 @@ function FormListPage() {
               <label htmlFor={`list_item${i + 1}`}>Ítem {i + 1}:</label>
               
               <div className="grid grid-cols-2 gap-1 px-2">
-                <label htmlFor={`itemCompleted${i}`}>Completado</label>
+                <label htmlFor={`itemCompleted${i}`}>Completado:</label>
                 <input type="checkbox" name={`itemCompleted${i}`} id={`itemCompleted${i}`} value="1" defaultChecked={list ? items[i].completed : false } className="w-5" />
                 <input type="hidden" name={`itemCompleted${i}`} value="0" />
                 <input type="hidden" name="items" />
@@ -175,18 +175,23 @@ function FormListPage() {
           </ul> :
           ""
         }
+
+        <div className="flex justify-center mt-3 mb-1 text-sm gap-6">
+          <button type="button" onClick={handleNewItem}>
+            <AiFillPlusCircle className="text-4xl text-blue-400 hover:text-blue-600" />
+          </button>
+
+          {items.length > 1 && 
+            <button type="button" onClick={handleDeleteItem}>
+              <AiFillCloseCircle className="text-4xl text-red-400 hover:text-red-600" />
+            </button>
+          }
+        </div>
+
         <div className="flex justify-center pt-2">
           <Button>{list ? "Actualizar lista" : "Crear lista"}</Button>
         </div>
       </Form>
-      
-      <div className="flex justify-center mt-3 mb-1 text-sm gap-6">
-        <Button onClick={handleNewItem} customClasses="border-blue-300 bg-blue-400 hover:bg-blue-600">Agregar ítem</Button>
-
-        {items.length > 1 && 
-          <Button onClick={handleDeleteItem} customClasses="bg-red-400 border-red-300 hover:bg-red-600">Eliminar ítem</Button>
-        }
-      </div>
     </>
   );
 }

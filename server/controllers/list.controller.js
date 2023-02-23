@@ -3,7 +3,10 @@ import User from '../models/User.js'
 
 export const getLists = async (req, res) => {
   try {
-    const lists = await List.find({user: req.userId})
+    // Verificar funcionamiento
+    const limit = 9
+    const {page} = req.query
+    const lists = await List.find({user: req.userId}).limit(limit).skip(limit * (page - 1))
 
     res.json({
       success: true,

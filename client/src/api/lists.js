@@ -1,10 +1,13 @@
 import axios from 'axios'
 
-export const getLists = async (token) => {
+export const getLists = async (token, page) => {
   try {
     return await axios.get("/api/lists", {
       headers: {
         "x-access-token": token
+      },
+      params: {
+        page: page
       }
     })
   } catch (error) {

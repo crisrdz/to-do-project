@@ -1,14 +1,20 @@
 import { AiOutlineUnorderedList } from "react-icons/ai";
-import { Form, Link, useLoaderData, useNavigate } from "react-router-dom";
+import { redirect, useLoaderData, useNavigate } from "react-router-dom";
 import { getLists } from "../../../api/lists";
 import Button from "../../../components/ui/Button";
 import ShortList from "../../../components/ui/ShortList";
 import Title from "../../../components/ui/Title";
 
-export async function loader() {
+export async function loader({request}) {
   try {
+    const currentPage = new URL(request.url).searchParams.get("page")
     const token = window.localStorage.getItem("token");
-    const response = await getLists(token);
+    let response;
+    if(!currentPage || parseInt(currentPage) < 1){
+      return redirect("/user/lists?page=1")
+    }else{
+      response = await getLists(token, currentPage);
+    }
 
     return response.data.lists;
   } catch (error) {
@@ -19,6 +25,12 @@ export async function loader() {
 function ListsPage() {
   const lists = useLoaderData();
   const navigate = useNavigate()
+  let currentPage = parseInt(new URL(window.location).searchParams.get("page"))
+  
+  if(isNaN(currentPage)){
+    currentPage = 1
+  }
+  console.log(currentPage)
 
   function handleCreate () {
     navigate("create")
@@ -34,8 +46,10 @@ function ListsPage() {
             );
           })}
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-5">
+        <Button onClick={() => navigate(`?page=${currentPage-1}`)}>Anterior</Button>
         <Button onClick={handleCreate}>Nueva lista</Button>
+        <Button onClick={() => navigate(`?page=${currentPage+1}`)}>Siguiente</Button>
       </div>
     </>
   );

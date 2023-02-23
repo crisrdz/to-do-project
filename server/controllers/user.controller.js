@@ -20,7 +20,7 @@ export const getUsers = async (req, res) => {
       })
     }
 
-    const users = await User.find({}, { password: 0 }).populate(
+    const users = await User.find({_id: {$ne: req.userId}}, { password: 0 }).populate(
       {
         path: "roles",
         select: {
