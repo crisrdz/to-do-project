@@ -119,7 +119,9 @@ function UserPage() {
           }
 
           <Outlet context={user} />
-        
+          <div className='absolute right-1 bottom-0 text-sm'>
+            Image by <a href="https://www.freepik.com/free-vector/white-abstract-background_11852424.htm#query=background&position=27&from_view=search&track=sph">Freepik</a>
+          </div>
         </main>
         <Footer />
       </div>

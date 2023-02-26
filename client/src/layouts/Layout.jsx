@@ -53,7 +53,7 @@ function Layout({children}) {
       {!hiddenRegister && <Register handleRegister={handleRegister} />}
       {!hiddenLogin && <Login handleLogin={handleLogin} />}
 
-      <main className="flex flex-col items-center justify-center bg-cover min-h-[calc(100vh-4rem-7rem)] md:flex-row md:min-h-[calc(100vh-4rem-8rem)] lg:gap-32" style={{backgroundImage: `url("${background}")`}}>
+      <main className="relative flex flex-col items-center justify-center bg-cover min-h-[calc(100vh-4rem-7rem)] md:flex-row md:min-h-[calc(100vh-4rem-8rem)] lg:gap-32" style={{backgroundImage: `url("${background}")`}}>
         {children ? children : <Outlet context={handleRegister} />}
       </main>
       
