@@ -1,7 +1,7 @@
-import { redirect, useActionData } from 'react-router-dom'
+import { redirect, useActionData, useNavigation } from 'react-router-dom'
 import { login } from '../../api/auth.js'
 import ModalForm from './ModalForm.jsx'
-import { AiFillCloseSquare } from 'react-icons/ai'
+import { AiFillCloseSquare, AiOutlineLoading } from 'react-icons/ai'
 import Button from '../ui/Button.jsx'
 import Input from '../ui/Input.jsx'
 
@@ -31,6 +31,7 @@ export async function action ({ request }) {
 
 function Login ({ handleLogin }) {
   const errors = useActionData()
+  const navigation = useNavigation()
 
   return (
     <ModalForm 
@@ -52,7 +53,7 @@ function Login ({ handleLogin }) {
       
       <p className="text-red-500 text-sm">{ errors?.[0]?.msg }</p>
       <div className="flex justify-center">
-        <Button>Iniciar sesión</Button>
+        {navigation.state === "submitting" ? <Button isSubmitting={true}><AiOutlineLoading className='text-xl animate-spin'/></Button> : <Button>Iniciar sesión</Button>}
       </div>
     </ ModalForm>
   )

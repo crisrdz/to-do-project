@@ -28,7 +28,9 @@ const listSchema = new Schema({
   }]
 }, {
   timestamps: true,
-  versionKey: false
+  versionKey: false,
+  toJSON: {virtuals: true},
+  toObject: {virtuals: true}
 })
 
 export default model("List", listSchema)

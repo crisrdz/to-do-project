@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useOutletContext } from "react-router-dom"
 
-function ProtectedRoute({ isAdmin = false }) {
+function ProtectedRoute({ isMod = false }) {
 
   const user = useOutletContext()
   const roles = user.roles.map(role => role.name)
@@ -9,11 +9,11 @@ function ProtectedRoute({ isAdmin = false }) {
     return <Navigate to="/" replace />
   }
 
-  if(isAdmin && !roles.includes("admin")){
+  if(isMod && !roles.includes("moderator")){
     return <Navigate to="/user" replace />
   }
 
-  return <Outlet />
+  return <Outlet context={user} />
 }
 
 export default ProtectedRoute

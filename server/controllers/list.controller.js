@@ -4,9 +4,9 @@ import User from '../models/User.js'
 export const getLists = async (req, res) => {
   try {
     // Verificar funcionamiento
-    const limit = 9
+    const limit = 12
     const {page} = req.query
-    const lists = await List.find({user: req.userId}).limit(limit).skip(limit * (page - 1))
+    const lists = await List.find({user: req.userId}).limit(limit).skip(limit * (page - 1)).sort("-createdAt")
 
     res.json({
       success: true,
@@ -27,12 +27,18 @@ export const createList = async (req, res) => {
 
     const user = await User.findById(req.userId)
 
-    const list = new List({
+    let list = new List({
       name,
       completed,
       items,
       user: user._id
     })
+
+    if(list.items.every(item => item.completed)){
+      list.completed = true
+    }else{
+      list.completed = false
+    }
 
     const listSaved = await list.save()
 
@@ -50,9 +56,21 @@ export const createList = async (req, res) => {
 
 export const updateList = async (req, res) => {
   try {
-    const updatedList = await List.findOneAndUpdate({_id:req.params.id, user: req.userId}, req.body, {
-      new: true
-    }) 
+    const {name, items, completed} = req.body
+    
+    let list = await List.findOne({_id: req.params.id, user: req.userId})
+    
+    list.name = name
+    list.items = items
+    if(completed) list.completed = completed
+
+    if(list.items.every(item => item.completed)){
+      list.completed = true
+    }else{
+      list.completed = false
+    }
+    
+    const updatedList = await list.save()
 
     if(!updatedList) return res.status(401).json({
       success: false,

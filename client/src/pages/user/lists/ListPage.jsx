@@ -22,7 +22,7 @@ export async function loader ({ params }) {
 function ListPage() {
   const list = useLoaderData()
   const navigate = useNavigate()
-  const completedStyle = list.completed ? "text-green-300" : "text-gray-500"
+  const completedStyle = list.completed ? "text-green-500" : "text-red-500"
 
   return (
     <>
@@ -42,7 +42,7 @@ function ListPage() {
 
         <ul>
           {list.items.map((item, i) => 
-            <li key={i} className="border-b-2 border-gray-200 flex items-center gap-1 p-1">
+            <li key={i} className={`border-b-2 border-gray-200 flex items-center gap-1 p-1 ${item.completed && "line-through decoration-green-400"}`}>
               {item.completed ? <AiOutlineCheckSquare /> : <AiOutlineBorder />} {item.description}
             </li>
           )}

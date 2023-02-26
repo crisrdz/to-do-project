@@ -29,7 +29,9 @@ const userSchema = new Schema ({
   },
 }, {
   timestamps: true,
-  versionKey: false
+  versionKey: false,
+  toJSON: {virtuals: true},
+  toObject: {virtuals: true}
 })
 
 userSchema.statics.encryptPassword = async (password) => {
@@ -41,5 +43,12 @@ userSchema.statics.comparePasswords = async (password, passwordDB) => {
   const result = await bcrypt.compare(password, passwordDB)
   return result
 }
+
+userSchema.virtual("listCount", {
+  ref: "List",
+  localField: "_id",
+  foreignField: "user",
+  count: true
+})
 
 export default model("User", userSchema)

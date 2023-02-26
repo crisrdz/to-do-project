@@ -27,8 +27,11 @@ export const validateConfig = () => {
       .isArray()
       .withMessage("Ingrese ítems con un formato válido"),
     body("items[*].completed")
+      .exists()
       .isBoolean(),
     body("items[*]['description']", "Ingrese una descripción válida")
-      .isAlphanumeric('es-ES')
+      .exists()
+      .isLength({min: 3})
+      .withMessage("La descripción debe contener mínimo 3 caracteres"),
   ]
 }

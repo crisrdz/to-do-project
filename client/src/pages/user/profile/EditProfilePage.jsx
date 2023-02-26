@@ -1,5 +1,5 @@
-import { AiOutlineUser } from 'react-icons/ai';
-import { Form, redirect, useActionData, useNavigate } from 'react-router-dom'
+import { AiOutlineLoading, AiOutlineUser } from 'react-icons/ai';
+import { Form, redirect, useActionData, useNavigate, useNavigation } from 'react-router-dom'
 import { updateUser } from "../../../api/user";
 import Title from '../../../components/ui/Title';
 import Input from '../../../components/ui/Input';
@@ -29,6 +29,7 @@ export async function action ({ request }) {
 function EditProfilePage() {
   const errors = useActionData()
   const navigate = useNavigate()
+  const navigation = useNavigation()
 
   return (
     <>
@@ -79,7 +80,7 @@ function EditProfilePage() {
         </div>
 
         <div className='flex justify-center my-2'>
-          <Button customClasses="bg-blue-400 hover:bg-blue-800 border-blue-200">Editar</Button>
+          {navigation.state === "submitting" ? <Button isSubmitting={true} submittingClasses="bg-blue-800 hover:bg-blue-800"><AiOutlineLoading className='text-xl animate-spin'/></Button> : <Button customClasses="bg-blue-400 hover:bg-blue-800 border-blue-200">Editar</Button>}
         </div>
       </Form>
     </>

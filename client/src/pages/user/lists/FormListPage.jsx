@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Form, redirect, useActionData, useLoaderData, useNavigate } from "react-router-dom";
+import { Form, redirect, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import { createList, deleteList, updateList } from "../../../api/lists";
 import Input from '../../../components/ui/Input'
 import Button from '../../../components/ui/Button'
 import Title from '../../../components/ui/Title'
-import { AiFillCloseCircle, AiFillPlusCircle, AiOutlineUnorderedList } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillPlusCircle, AiOutlineLoading, AiOutlineUnorderedList } from "react-icons/ai";
 
 export async function action ({ request, params }) {
   try {
@@ -88,12 +88,13 @@ function FormListPage() {
   const errors = useActionData()
   const list = useLoaderData()
   const navigate = useNavigate()
+  const navigation = useNavigation()
 
   useEffect(() => {
     if(list){
       setItems(list.items)
     }
-  }, [list])
+  }, [])
   
 
   function handleNewItem() {
@@ -141,7 +142,7 @@ function FormListPage() {
       <Title><AiOutlineUnorderedList /> {list ? "Editar lista" : "Crear lista"}</Title>
       <Form
         method={list ? "PUT" : "POST"}
-        className="border-2 border-gray-400 rounded-xl p-2 mx-auto w-3/4 max-w-[24rem] md:w-96 bg-white"
+        className="border-2 border-gray-400 rounded-xl p-2 mx-auto w-3/4 max-w-[24rem] md:w-96 bg-white mb-2"
       >
         <div className="border-y-2 border-gray-200 pt-1 pb-2">
           <label htmlFor="list_name">Nombre de la lista:</label>
@@ -152,29 +153,29 @@ function FormListPage() {
             <div key={i} className="border-b-2 border-gray-200 pt-1 pb-2">
               <label htmlFor={`list_item${i + 1}`}>Ítem {i + 1}:</label>
               
-              <div className="grid grid-cols-2 gap-1 px-2">
-                <label htmlFor={`itemCompleted${i}`}>Completado:</label>
-                <input type="checkbox" name={`itemCompleted${i}`} id={`itemCompleted${i}`} value="1" defaultChecked={list ? items[i].completed : false } className="w-5" />
-                <input type="hidden" name={`itemCompleted${i}`} value="0" />
-                <input type="hidden" name="items" />
+              <div className="flex flex-col gap-1 px-2">
+                <div className="grid grid-cols-2 gap-1">
+                  <label htmlFor={`itemCompleted${i}`}>Completado:</label>
+                  <input type="checkbox" name={`itemCompleted${i}`} id={`itemCompleted${i}`} value="1" defaultChecked={list ? items[i].completed : false } className="w-5" />
+                  <input type="hidden" name={`itemCompleted${i}`} value="0" />
+                  <input type="hidden" name="items" />
+                </div>
+                { errors?.find(error => error.param === `items[${i}].completed`) && <p className="text-red-500 text-sm">{errors.find((error) => error.param === `items[${i}].completed`)?.msg}</p> }
 
-                <label htmlFor={`list_item${i + 1}`}>Descripción:</label>
-                <Input
-                  type="text"
-                  name={`item${i}`}
-                  id={`list_item${i + 1}`}
-                  defaultValue={list ? items[i].description : ""}
-                />
+                <div className="grid grid-cols-2 gap-1">
+                  <label htmlFor={`list_item${i + 1}`}>Descripción:</label>
+                  <Input
+                    type="text"
+                    name={`item${i}`}
+                    id={`list_item${i + 1}`}
+                    defaultValue={list ? items[i].description : ""}
+                  />
+                </div>
+                { errors?.find(error => error.param === `items[${i}].description`) && <p className="text-red-500 text-sm text-center">{errors.find((error) => error.param === `items[${i}].description`)?.msg}</p> }
               </div>
             </div>
           );
         })}
-        {errors ? 
-          <ul>
-            {errors.map((error, i) => <li key={`error${i}`}>{error.msg}</li>)}
-          </ul> :
-          ""
-        }
 
         <div className="flex justify-center mt-3 mb-1 text-sm gap-6">
           <button type="button" onClick={handleNewItem}>
@@ -189,7 +190,11 @@ function FormListPage() {
         </div>
 
         <div className="flex justify-center pt-2">
-          <Button>{list ? "Actualizar lista" : "Crear lista"}</Button>
+          {navigation.state === "submitting" ?
+            <Button isSubmitting={true}><AiOutlineLoading className='text-xl animate-spin' /></Button>
+            :
+            <Button>{list ? "Actualizar lista" : "Crear lista"}</Button>
+          }
         </div>
       </Form>
     </>

@@ -1,12 +1,15 @@
 import axios from "axios";
 
 // admin requests
-export const getUsers = async (token) => {
+export const getUsers = async (token, page) => {
   try {
     return await axios.get("/api/user/admin", {
       headers: {
         "x-access-token": token,
       },
+      params: {
+        page
+      }
     });
   } catch (error) {
     if(error.response.status !== 500){

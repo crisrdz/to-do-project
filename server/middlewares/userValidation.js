@@ -73,7 +73,7 @@ export const validateConfig = () => {
       }),
     body("roles")
       .optional()
-      .isIn(["user", "admin"])
+      .isIn(["user", "admin", "moderator"])
       .withMessage("Ingrese un rol válido"),
     body("passwordOld")
       .optional()

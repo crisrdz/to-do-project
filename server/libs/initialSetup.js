@@ -8,6 +8,9 @@ const initialSetup = async () => {
         name: "user",
       },
       {
+        name: "moderator"
+      },
+      {
         name: "admin",
       }
     );

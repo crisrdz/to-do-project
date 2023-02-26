@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { AiOutlineMenu, AiOutlineHome, AiOutlineUser, AiOutlineUnorderedList } from 'react-icons/ai'
-import { Outlet, NavLink, useNavigate, useLoaderData, redirect } from 'react-router-dom'
+import { AiOutlineMenu, AiOutlineHome, AiOutlineUser, AiOutlineUnorderedList, AiOutlineLock, AiOutlineLoading } from 'react-icons/ai'
+import { Outlet, NavLink, useNavigate, useLoaderData, redirect, useNavigation } from 'react-router-dom'
 import { getUser } from '../../api/user'
 import background from '../../assets/background.jpg'
+import ModalConfirm from '../../components/modals/ModalConfirm'
 import Footer from '../../components/ui/Footer'
 
 export async function loader () {
@@ -19,13 +20,27 @@ export async function loader () {
 function UserPage() {
   const [menu, setMenu] = useState(false)
   const navigate = useNavigate()
+  const navigation = useNavigation()
   const styleClasses = "flex flex-row items-center gap-1 hover:text-teal-200"
   
   const user = useLoaderData()
 
-  function handleLogout () {
-    window.localStorage.removeItem("token")
-    navigate("/")
+  const [modalProps, setModalProps] = useState({
+    show: false,
+    eventTarget: null,
+    messages: {
+      main: null
+    }
+  })
+
+  function handleLogout (e) {
+    setModalProps({
+      show: true,
+      eventTarget: e.target,
+      messages: {
+        main: "¿Estás seguro de que quieres cerrar sesión?"
+      }
+    })
   }
 
   return (
@@ -44,7 +59,7 @@ function UserPage() {
               <AiOutlineHome />Home
             </NavLink>
           </li>
-          { user.roles.map(role => role.name).includes("admin") &&
+          { user.roles.some(role => role.name === "moderator") &&
             <li className='flex justify-center'>
               <NavLink 
                 to="admin" 
@@ -52,7 +67,7 @@ function UserPage() {
                 onClick={() => setMenu(false)}
                 end
               >
-                <AiOutlineHome />Admin
+                <AiOutlineLock />{user.roles.some(role => role.name === "admin") ? "Admin" : "Moderador"}
               </NavLink>
             </li>
           }
@@ -76,14 +91,33 @@ function UserPage() {
               <AiOutlineUnorderedList />Listas
             </NavLink>
           </li>
-          <button className='text-red-200 flex self-center w-max border-t-2 border-teal-800 border-opacity-20 pt-1 md:absolute md:bottom-4 md:left-1/2 md:-translate-x-1/2' onClick={handleLogout}>
+          <button className='text-red-200 flex self-center w-max border-t-2 border-teal-800 border-opacity-20 pt-1 md:absolute md:bottom-4 md:left-1/2 md:-translate-x-1/2' onClick={(e) => handleLogout(e)}>
             Cerrar sesión
           </button>
         </ul>
       </aside>
+      {
+        modalProps.show &&
+          <ModalConfirm 
+            close={() => setModalProps({...modalProps, show: false})}
+            confirm={() => {
+              window.localStorage.removeItem("token")
+              navigate("/")
+            }}
+          >
+            <p className="text-center">{modalProps.messages.main}</p>
+            {!!modalProps.messages.optional && <p className="text-red-400 text-center">{modalProps.messages.optional}</p>}
+          </ModalConfirm>
+      }
       <div className='md:w-4/5 md:float-right'>
         <main style={{backgroundImage: `url("${background}")`}} className='relative bg-cover min-h-[calc(100vh-2.5rem-7rem)] md:min-h-[calc(100vh-8rem)] flex flex-col justify-center'>
-          
+
+          {navigation.state === "loading" && 
+            <div className="z-50 absolute top-0 left-0 bg-[rgba(0,0,0,0.5)] w-full h-full">
+              <div className="fixed left-[60%] top-1/2 -translate-x-1/2 -translate-y-1/2"><AiOutlineLoading className="text-3xl text-white animate-spin" /></div>
+            </div>
+          }
+
           <Outlet context={user} />
         
         </main>

@@ -1,4 +1,4 @@
-import { redirect, useActionData } from "react-router-dom";
+import { redirect, useActionData, useNavigation } from "react-router-dom";
 import { register } from "../../api/auth";
 import { AiFillCloseSquare } from 'react-icons/ai'
 import Button from "../ui//Button";
@@ -30,6 +30,7 @@ export async function action ({ request }) {
 
 function Register({ handleRegister }) {
   let errors = useActionData()
+  const navigation = useNavigation()
 
   return (
     <ModalForm 
@@ -64,7 +65,7 @@ function Register({ handleRegister }) {
       </div>
 
       <div className="flex justify-center">
-        <Button>Registrarse</Button>
+        {navigation.state === "submitting" ? <Button isSubmitting={true}><AiOutlineLoading className='text-xl animate-spin'/></Button> : <Button>Registrarse</Button>}
       </div>
     </ModalForm>
   )
