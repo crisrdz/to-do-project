@@ -76,10 +76,9 @@ export async function action ({ request, params }) {
     throw new Error()
     
   } catch (error) {
-    console.log(error)
     if (error?.response?.data?.errors) return error.response.data.errors
 
-    throw new Error("Error al crear lista")
+    throw new Error("Error al operar lista")
   }
 }
 
