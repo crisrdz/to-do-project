@@ -13,7 +13,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 app.use(express.json())
 app.use(morgan("dev"))
 
-app.use(express.static(join(__dirname, '../client/dist')))
+app.use(express.static(join(__dirname, 'static')))
 
 //Routes
 app.use("/api/auth", authRoutes)
