@@ -13,11 +13,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 app.use(express.json())
 app.use(morgan("dev"))
 
+app.use(express.static(join(__dirname, '../client/dist')))
+
 //Routes
 app.use("/api/auth", authRoutes)
 app.use("/api/lists", listRoutes)
 app.use("/api/user", userRoutes)
-
-app.use(express.static(join(__dirname, '../client/dist')))
 
 export default app
