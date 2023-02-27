@@ -1,6 +1,6 @@
 import { redirect, useActionData, useNavigation } from "react-router-dom";
 import { register } from "../../api/auth";
-import { AiFillCloseSquare } from 'react-icons/ai'
+import { AiFillCloseSquare, AiOutlineLoading } from 'react-icons/ai'
 import Button from "../ui//Button";
 import Input from "../ui/Input";
 import ModalForm from "./ModalForm";
