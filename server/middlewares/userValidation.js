@@ -55,7 +55,7 @@ export const validateConfig = () => {
       .isLength({min: 8})
       .withMessage("El nombre de usuario debe tener por lo menos 8 caracteres")
       .isAlpha('es-ES')
-      .withMessage("El nombre de usuario solo debe contener letras"),
+      .withMessage("El nombre de usuario solo debe contener letras y/o números"),
     body("email", "Ingrese un email válido")
       .exists()
       .isEmail(),

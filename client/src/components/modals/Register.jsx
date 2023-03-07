@@ -43,19 +43,19 @@ function Register({ handleRegister }) {
       <div>
         <label htmlFor="emailRegister" className="block">Email</label>
         <Input type="text" name="email" id="emailRegister" />
-        { errors && <p className="text-red-500 text-sm">{errors.find((error) => error.param === "email")?.msg}</p> }
+        { errors ? <p className="text-red-500 text-sm">{errors.find((error) => error.param === "email")?.msg}</p> : <p className="text-gray-500 text-sm">Ingresa un email válido <i>(ej: example@email.com)</i></p>}
       </div>
 
       <div>
         <label htmlFor="username" className="block">Nombre de usuario</label>
         <Input type="text" name="username" id="username" />
-        { errors && <p className="text-red-500 text-sm">{errors.find((error) => error.param === "username")?.msg}</p> }
+        { errors ? <p className="text-red-500 text-sm">{errors.find((error) => error.param === "username")?.msg}</p> : <p className="text-gray-500 text-sm">El nombre de usuario debe tener mínimo 8 caracteres y deben ser únicamente letras y/o números <i>(ej: userexample12)</i></p>}
       </div>
 
       <div>
         <label htmlFor="passwordOne" className="block">Contraseña</label>
         <Input type="password" name="passwordOne" id="passwordOne" />
-        { errors && <p className="text-red-500 text-sm">{errors.find((error) => error.param === "passwordOne")?.msg}</p> }
+        { errors ? <p className="text-red-500 text-sm">{errors.find((error) => error.param === "passwordOne")?.msg}</p> : <p className="text-gray-500 text-sm">La contraseña debe tener por lo menos 8 caracteres y debe contener 1 letra minúscula, 1 letra mayúscula, 1 número y 1 símbolo <i>(ej: Password123@)</i></p> }
       </div>
 
       <div>
