@@ -1,6 +1,8 @@
 import axios from 'axios'
+import memoize from 'memoizee'
+import { addRedo } from '../common/common'
 
-export const getLists = async (token, page) => {
+export const getLists = memoize(async (token, page) => {
   try {
     return await axios.get("/api/lists", {
       headers: {
@@ -17,15 +19,19 @@ export const getLists = async (token, page) => {
     
     return Promise.reject(error)
   }
-}
+})
 
 export const createList = async (token, req) => {
   try {
-    return await axios.post("/api/lists", req, {
+    const response = await axios.post("/api/lists", req, {
       headers: {
         "x-access-token": token
       }
-    })
+    });
+
+    addRedo("getLists");
+
+    return response;
   } catch (error) {
     if(error.response.status !== 500){
       window.localStorage.removeItem("token") 
@@ -37,11 +43,15 @@ export const createList = async (token, req) => {
 
 export const updateList = async (token, req, id) => {
   try {
-    return await axios.put(`/api/lists/${id}`, req, {
+    const response = await axios.put(`/api/lists/${id}`, req, {
       headers: {
         "x-access-token": token
       }
-    })
+    });
+
+    addRedo("getLists");
+
+    return response;
   } catch (error) {
     if(error.response.status !== 500){
       window.localStorage.removeItem("token") 
@@ -53,11 +63,15 @@ export const updateList = async (token, req, id) => {
 
 export const deleteList = async (token, id) => {
   try {
-    return await axios.delete(`/api/lists/${id}`, {
+    const response = await axios.delete(`/api/lists/${id}`, {
       headers: {
         "x-access-token": token
       }
     })
+
+    addRedo("getLists");
+
+    return response;
   } catch (error) {
     if(error.response.status !== 500){
       window.localStorage.removeItem("token") 

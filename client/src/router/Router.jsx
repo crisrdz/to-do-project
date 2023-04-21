@@ -8,7 +8,7 @@ import ErrorPage from "../pages/ErrorPage";
 //users pages
 import UserPage, {loader as userLoader} from "../pages/user/UserPage";
 import HomePage from "../pages/user/home/HomePage";
-import ProfilePage, {loader as profileLoader} from "../pages/user/profile/ProfilePage";
+import ProfilePage from "../pages/user/profile/ProfilePage";
 import EditProfilePage, {action as editProfileAction} from "../pages/user/profile/EditProfilePage";
 import AdminPage, {loader as adminLoader, actionDisableUser, actionEnableUser, actionChangeRole} from "../pages/user/admin/AdminPage";
 
@@ -71,7 +71,6 @@ export const router = createBrowserRouter([
           {
             path: "profile",
             element: <ProfilePage />,
-            loader: profileLoader,
           },
           {
             path: "profile/edit",
@@ -106,7 +105,7 @@ export const router = createBrowserRouter([
         ]
       },
       {
-        element: <ProtectedRoute isMod={true} />,
+        element: <ProtectedRoute isModRoute={true} />,
         children: [
           {
             path: "admin",

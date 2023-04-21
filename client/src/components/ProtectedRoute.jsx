@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useOutletContext } from "react-router-dom"
 
-function ProtectedRoute({ isMod = false }) {
+function ProtectedRoute({ isModRoute = false }) {
 
   const user = useOutletContext()
   const roles = user.roles.map(role => role.name)
@@ -9,7 +9,7 @@ function ProtectedRoute({ isMod = false }) {
     return <Navigate to="/" replace />
   }
 
-  if(isMod && !roles.includes("moderator")){
+  if(isModRoute && !roles.includes("moderator")){
     return <Navigate to="/user" replace />
   }
 

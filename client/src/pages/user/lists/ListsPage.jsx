@@ -8,12 +8,19 @@ import Title from "../../../components/ui/Title";
 export async function loader({request}) {
   try {
     const currentPage = new URL(request.url).searchParams.get("page")
-    const token = window.localStorage.getItem("token");
-
+    
     let response;
     if(!currentPage || parseInt(currentPage) < 1){
       return redirect("/user/lists?page=1")
     }else{
+      const token = window.localStorage.getItem("token")
+      const redo = JSON.parse(window.sessionStorage.getItem("redo")) 
+      
+      if(redo?.getLists){
+        getLists.delete(token, currentPage);
+        redo.getLists = false;
+        window.sessionStorage.setItem("redo", JSON.stringify(redo));        
+      }
       response = await getLists(token, currentPage);
     }
 

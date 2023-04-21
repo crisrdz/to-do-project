@@ -1,22 +1,10 @@
 import { AiOutlineUser } from "react-icons/ai";
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { getUser } from "../../../api/user";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Button from "../../../components/ui/Button";
 import Title from "../../../components/ui/Title";
 
-export async function loader() {
-  const token = window.localStorage.getItem("token");
-  const response = await getUser(token);
-
-  if (!response.data.success) {
-    throw new Error("Error al leer los datos del usuario");
-  }
-
-  return response.data.user;
-}
-
 function ProfilePage() {
-  const user = useLoaderData();
+  const user = useOutletContext();
   const roles = user.roles.map((role) => role.name);
   const navigate = useNavigate()
 

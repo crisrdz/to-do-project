@@ -8,9 +8,21 @@ import Footer from '../../components/ui/Footer'
 
 export async function loader () {
   try {
+    const redo = JSON.parse(window.sessionStorage.getItem("redo")) 
     const token = window.localStorage.getItem("token")
-    const response = await getUser(token)
     
+    if(redo?.getUser){
+      getUser.delete(token);
+
+      redo.getUser = false;
+      window.sessionStorage.setItem("redo", JSON.stringify(redo));
+      
+      const response = await getUser(token);
+      return response.data.user
+    }
+
+    const response = await getUser(token)
+
     return response.data.user
   } catch (error) {
     return redirect("/")
@@ -23,8 +35,8 @@ function UserPage() {
   const navigation = useNavigation()
   const styleClasses = "flex flex-row items-center gap-1 hover:text-teal-200"
   
-  const user = useLoaderData()
-
+  const user = useLoaderData();
+  
   const [modalProps, setModalProps] = useState({
     show: false,
     eventTarget: null,

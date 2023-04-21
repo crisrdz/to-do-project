@@ -1,4 +1,6 @@
 import axios from "axios";
+import memoize from 'memoizee'
+import { addRedo } from '../common/common.js'
 
 // admin requests
 export const getUsers = async (token, page) => {
@@ -20,7 +22,7 @@ export const getUsers = async (token, page) => {
 };
 
 // user requests
-export const getUser = async (token) => {
+export const getUser = memoize(async (token) => {
   try {
     return await axios.get("/api/user", {
       headers: {
@@ -33,15 +35,19 @@ export const getUser = async (token) => {
     }
     return Promise.reject(error)
   }
-};
+});
 
 export const updateUser = async (token, req) => {
   try {
-    return await axios.put("/api/user", req, {
+    const result = await axios.put("/api/user", req, {
       headers: {
         "x-access-token": token,
       },
     });
+
+    addRedo("getUser");
+
+    return result;
   } catch (error) {
     if(error.response.status !== 500){
       window.localStorage.removeItem("token")
