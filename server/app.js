@@ -11,7 +11,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Middlewares
 app.use(express.json())
-app.use(morgan("dev"))
+app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'))
 
 app.use(express.static(join(__dirname, 'static')))
 
