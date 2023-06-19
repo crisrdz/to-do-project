@@ -16,13 +16,13 @@ No está garantizado su funcionamiento con versiones anteriores.
 1. Clona este repositorio en tu máquina local:
 
    ```shell
-   git clone https://github.com/tu-usuario/nombre-del-repositorio.git
+   git clone https://github.com/crisrdz/to-do-project.git
    ```
 
 2. Navega al directorio del proyecto:
 
    ```shell
-   cd nombre-del-repositorio
+   cd to-do-project
    ```
 
 3. Instala las dependencias del servidor:
