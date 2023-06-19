@@ -52,7 +52,7 @@ No está garantizado su funcionamiento con versiones anteriores.
    
    ```plaintext
    PORT = 3000
-   MONGODB_URI = tu-url-de-mongodb
+   DB_NAME = tu-url-de-mongodb
    SECRET_KEY = tu-llave-secreta
 
 Asegúrate de reemplazar tu-url-de-mongodb con la URL de tu base de datos MongoDB.
